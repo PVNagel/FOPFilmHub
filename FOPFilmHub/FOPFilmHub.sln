@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34902.65
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FOPFilmHub", "FOPFilmHub\FOPFilmHub\FOPFilmHub.csproj", "{70938AD4-76E1-4DDE-8F32-947247FFA3EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FOPFilmHub.Client", "FOPFilmHub\FOPFilmHub.Client\FOPFilmHub.Client.csproj", "{C08BF139-0FC7-47FA-96E7-4002E6DFE6B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FOPFilmHub.Library", "FOPFilmHub.Library\FOPFilmHub.Library.csproj", "{A0FC8FF3-F0F0-41A0-BD59-4AF79FE741B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{70938AD4-76E1-4DDE-8F32-947247FFA3EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70938AD4-76E1-4DDE-8F32-947247FFA3EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70938AD4-76E1-4DDE-8F32-947247FFA3EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70938AD4-76E1-4DDE-8F32-947247FFA3EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C08BF139-0FC7-47FA-96E7-4002E6DFE6B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C08BF139-0FC7-47FA-96E7-4002E6DFE6B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C08BF139-0FC7-47FA-96E7-4002E6DFE6B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C08BF139-0FC7-47FA-96E7-4002E6DFE6B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0FC8FF3-F0F0-41A0-BD59-4AF79FE741B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0FC8FF3-F0F0-41A0-BD59-4AF79FE741B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0FC8FF3-F0F0-41A0-BD59-4AF79FE741B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0FC8FF3-F0F0-41A0-BD59-4AF79FE741B7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2A7A5689-0739-404B-9998-98856429F01A}
+	EndGlobalSection
+EndGlobal
