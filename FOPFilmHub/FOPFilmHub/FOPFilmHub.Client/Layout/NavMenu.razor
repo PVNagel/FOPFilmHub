@@ -1,15 +1,28 @@
-﻿@implements IDisposable
+﻿@using System.Security.Claims
+@implements IDisposable
 
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+
     <AuthorizeView>
         <Authorized>
             <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
             <MudNavLink Href="weather" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Weather</MudNavLink>
-            <MudNavLink Href="/profile" Icon="@Icons.Material.Filled.Person">Profile</MudNavLink>
-            <MudNavLink Href="Account/Manage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">@context.User.Identity?.Name</MudNavLink>
+
+            <!-- Navigate to user's profile dynamically -->
+            @if (user != null)
+            {
+                <MudNavLink Href="@($"/user/{user.UserName}")" Icon="@Icons.Material.Filled.Person">@user.UserName</MudNavLink>
+            }
+
+            @* <MudNavLink Href="/profile" Icon="@Icons.Material.Filled.Person">Profile</MudNavLink>
+            <MudNavLink Href="Account/Manage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">
+                @context.User.Identity?.Name
+            </MudNavLink> *@
+
             <form action="Account/Logout" method="post">
                 <AntiforgeryToken />
                 <input type="hidden" name="ReturnUrl" value="@currentUrl" />
@@ -18,6 +31,7 @@
                 </button>
             </form>
         </Authorized>
+
         <NotAuthorized>
             <MudNavLink Href="Account/Register" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">Register</MudNavLink>
             <MudNavLink Href="Account/Login" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Password">Login</MudNavLink>
@@ -25,14 +39,30 @@
     </AuthorizeView>
 </MudNavMenu>
 
-
 @code {
     private string? currentUrl;
+    private UserInfo? user;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        // Fetch current URL for the logout redirect
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
+
+        // Fetch the user authentication state
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var claimsPrincipal = authState.User;
+
+        if (claimsPrincipal.Identity != null && claimsPrincipal.Identity.IsAuthenticated)
+        {
+            // You can use claims or other methods to fetch user information
+            user = new UserInfo
+                {
+                    UserId = claimsPrincipal.FindFirst(c => c.Type == "sub")?.Value ?? "", // Replace "sub" with your claim type
+                    UserName = claimsPrincipal.Identity.Name ?? "Unknown",
+                    Email = claimsPrincipal.FindFirst(c => c.Type == ClaimTypes.Email)?.Value ?? "Unknown"
+                };
+        }
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -46,5 +76,3 @@
         NavigationManager.LocationChanged -= OnLocationChanged;
     }
 }
-
-

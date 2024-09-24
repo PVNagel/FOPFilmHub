@@ -1,0 +1,39 @@
+﻿@page "/user/{userName}"
+
+@using FOPFilmHub.Client.Services.User
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IUserClientService UserClientService
+
+<MudPaper>
+    <MudText Typo="Typo.h5">User Information</MudText>
+    <MudDivider />
+
+    <MudAvatar>
+        <!-- You can add logic for avatar if needed -->
+        <MudAvatar Color="Color.Primary">M</MudAvatar>
+    </MudAvatar>
+
+    @if (userInfo != null)
+    {
+        <MudText Typo="Typo.body1">Username: @userInfo.UserName</MudText>
+        <MudText Typo="Typo.body1">Email: @userInfo.Email</MudText>
+    }
+    else
+    {
+        <MudText Typo="Typo.body1">Loading...</MudText>
+    }
+</MudPaper>
+
+
+@code {
+    [Parameter] public string userName { get; set; }
+    private UserInfo userInfo;
+
+    protected override async Task OnInitializedAsync()
+    {
+        userInfo = await UserClientService.GetUserByUsernameAsync(userName);
+    }
+}
