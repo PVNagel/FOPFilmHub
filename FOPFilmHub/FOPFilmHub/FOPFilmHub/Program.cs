@@ -26,14 +26,23 @@ namespace FOPFilmHub
             builder.Services.AddScoped<IdentityUserAccessor>();
             builder.Services.AddScoped<IdentityRedirectManager>();
             builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvider>();
-
+            builder.Services.AddControllers();
             builder.Services.AddAuthorization();
             builder.Services.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = IdentityConstants.ApplicationScheme;
-                    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-                })
+            {
+                options.DefaultScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            })
                 .AddIdentityCookies();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin();  //set the allowed origin  
+                    });
+            });
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -58,11 +67,18 @@ namespace FOPFilmHub
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
+            app.UseCors();
             app.UseHttpsRedirection();
+            app.UseRouting();
+
+            // Add authentication and authorization middleware
+            app.UseAuthentication(); // Add this line
+            app.UseAuthorization(); // Add this line
+
+            app.MapControllers();
 
             app.UseStaticFiles();
             app.UseAntiforgery();
@@ -77,4 +93,5 @@ namespace FOPFilmHub
             app.Run();
         }
     }
+
 }

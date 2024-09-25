@@ -20,5 +20,10 @@ namespace FOPFilmHub.Client.Services.User
         {
             return await _httpClient.GetFromJsonAsync<UserInfo>($"api/user/username/{userName}");
         }
+
+        public async Task<List<UserInfo>> GetAllUsersAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<List<UserInfo>>($"api/user/all");
+        }
     }
 }

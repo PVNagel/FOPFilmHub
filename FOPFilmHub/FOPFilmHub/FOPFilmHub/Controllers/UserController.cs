@@ -54,5 +54,18 @@ namespace FOPFilmHub.Controllers
             };
             return Ok(userInfo);
         }
+
+        [HttpGet("all")]
+        public IActionResult GetAllUsers()
+        {
+            var users = _userManager.Users.Select(user => new UserInfo
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                Email = user.Email
+            }).ToList();
+
+            return Ok(users);
+        }
     }
 }

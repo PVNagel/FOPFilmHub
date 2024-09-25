@@ -6,5 +6,6 @@ namespace FOPFilmHub.Client.Services.User
     {
         Task<UserInfo> GetUserAsync(string userId);
         Task<UserInfo> GetUserByUsernameAsync(string userName);
+        Task<List<UserInfo>> GetAllUsersAsync();
     }
 }
