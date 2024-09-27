@@ -1,5 +1,5 @@
 using FOPFilmHub.Client;
-using FOPFilmHub.Client.Services.Movie;
+using FOPFilmHub.Client.Services.Film;
 using FOPFilmHub.Client.Services.User;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -20,7 +20,8 @@ namespace FOPFilmHub.Client
             builder.Services.AddCascadingAuthenticationState();
             builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
 
-            // Register UserClientService
+            // Register UserClientService, FilmClientService
+            builder.Services.AddScoped<IUserClientService, UserClientService>();
             builder.Services.AddScoped<IUserClientService, UserClientService>();
 
             await builder.Build().RunAsync();

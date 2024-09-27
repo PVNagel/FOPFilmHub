@@ -1,9 +1,9 @@
-﻿namespace FOPFilmHub.Client.Services.Movie
+﻿namespace FOPFilmHub.Client.Services.Film
 {
     /// <summary>
     /// Service for getting internal movie data from the Server.
     /// </summary>
-    public class MovieClientService
+    public class FilmClientService
     {
     }
 }

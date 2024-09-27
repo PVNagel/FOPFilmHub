@@ -3,7 +3,7 @@
     /// <summary>
     /// Service for getting external movie data through the TMDb API https://developer.themoviedb.org/
     /// </summary>
-    public class MovieService : IMovieService
+    public class FilmService : IFilmService
     {
     }
 }
