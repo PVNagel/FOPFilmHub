@@ -1,6 +1,5 @@
 using FOPFilmHub.Client;
-using FOPFilmHub.Client.Services.Film;
-using FOPFilmHub.Client.Services.User;
+using FOPFilmHub.Client.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
@@ -16,13 +15,13 @@ namespace FOPFilmHub.Client
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5160") });
             builder.Services.AddMudServices();
 
+            // Register UserClientService, FilmClientService
+            builder.Services.AddScoped<IUserClientService, UserClientService>();
+            builder.Services.AddScoped<IFilmClientService, FilmClientService>();
+
             builder.Services.AddAuthorizationCore();
             builder.Services.AddCascadingAuthenticationState();
             builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
-
-            // Register UserClientService, FilmClientService
-            builder.Services.AddScoped<IUserClientService, UserClientService>();
-            builder.Services.AddScoped<IUserClientService, UserClientService>();
 
             await builder.Build().RunAsync();
         }

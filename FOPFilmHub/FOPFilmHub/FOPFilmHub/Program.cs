@@ -2,6 +2,7 @@ using FOPFilmHub.Client.Pages;
 using FOPFilmHub.Components;
 using FOPFilmHub.Components.Account;
 using FOPFilmHub.Data;
+using FOPFilmHub.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,17 +16,16 @@ namespace FOPFilmHub
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add MudBlazor services
             builder.Services.AddMudServices();
-
-            // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveWebAssemblyComponents();
 
+            builder.Services.AddHttpClient();
             builder.Services.AddCascadingAuthenticationState();
             builder.Services.AddScoped<IdentityUserAccessor>();
             builder.Services.AddScoped<IdentityRedirectManager>();
             builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvider>();
+            builder.Services.AddScoped<IFilmService, FilmService>();
             builder.Services.AddControllers();
             builder.Services.AddAuthorization();
             builder.Services.AddAuthentication(options =>
@@ -40,7 +40,7 @@ namespace FOPFilmHub
                 options.AddDefaultPolicy(
                     policy =>
                     {
-                        policy.AllowAnyOrigin();  //set the allowed origin  
+                        policy.AllowAnyOrigin();
                     });
             });
 
@@ -58,7 +58,6 @@ namespace FOPFilmHub
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseWebAssemblyDebugging();
@@ -73,23 +72,17 @@ namespace FOPFilmHub
             app.UseCors();
             app.UseHttpsRedirection();
             app.UseRouting();
-
-            // Add authentication and authorization middleware
-            app.UseAuthentication(); // Add this line
-            app.UseAuthorization(); // Add this line
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.MapControllers();
-
             app.UseStaticFiles();
             app.UseAntiforgery();
-
             app.MapRazorComponents<App>()
                 .AddInteractiveWebAssemblyRenderMode()
                 .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
 
             // Add additional endpoints required by the Identity /Account Razor components.
             app.MapAdditionalIdentityEndpoints();
-
             app.Run();
         }
     }

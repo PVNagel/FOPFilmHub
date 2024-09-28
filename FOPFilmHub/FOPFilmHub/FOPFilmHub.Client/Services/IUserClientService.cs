@@ -1,6 +1,6 @@
 ﻿using FOPFilmHub.Library;
 
-namespace FOPFilmHub.Client.Services.User
+namespace FOPFilmHub.Client.Services
 {
     public interface IUserClientService
     {

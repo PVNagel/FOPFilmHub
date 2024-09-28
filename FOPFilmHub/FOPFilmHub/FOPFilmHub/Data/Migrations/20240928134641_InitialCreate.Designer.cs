@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FOPFilmHub.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240924103837_InitialCreate")]
+    [Migration("20240928134641_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

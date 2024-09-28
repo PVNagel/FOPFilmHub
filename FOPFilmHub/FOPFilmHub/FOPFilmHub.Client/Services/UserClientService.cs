@@ -1,7 +1,7 @@
 ﻿using FOPFilmHub.Library;
 using System.Net.Http.Json;
 
-namespace FOPFilmHub.Client.Services.User
+namespace FOPFilmHub.Client.Services
 {
     public class UserClientService : IUserClientService
     {

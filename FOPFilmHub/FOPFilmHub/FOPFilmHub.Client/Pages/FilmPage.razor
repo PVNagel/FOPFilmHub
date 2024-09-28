@@ -1,0 +1,31 @@
+﻿@page "/film/{filmId:int}"
+@using FOPFilmHub.Client.Services
+
+@inject IFilmClientService FilmClientService
+
+<h3>Film Details</h3>
+
+@if (film == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div>
+        <h4><strong>Title:</strong> @film.Title</h4>
+        <p><strong>Genres:</strong> @string.Join(", ", film.Genres.Select(g => g.Name))</p>
+        <p><strong>Release Date:</strong> @film.ReleaseDate</p>
+        <p><strong>Synopsis:</strong> @film.Overview</p>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int FilmId { get; set; }
+    private Film? film;
+
+    protected override async Task OnInitializedAsync()
+    {
+        film = await FilmClientService.GetFilmByIdAsync(FilmId);
+    }
+}
