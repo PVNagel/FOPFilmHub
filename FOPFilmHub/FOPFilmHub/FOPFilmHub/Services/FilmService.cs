@@ -62,14 +62,14 @@ public class FilmService : IFilmService
             ImdbId = filmResponse.ImdbId,
 
             // Map Genres
-            Genres = filmResponse.Genres?.Select(g => new Film.Genre
+            Genres = filmResponse.Genres?.Select(g => new Genre
             {
                 Id = g.Id,
                 Name = g.Name
             }).ToList(),
 
             // Map Production Companies
-            ProductionCompanies = filmResponse.ProductionCompanies?.Select(pc => new Film.ProductionCompany
+            ProductionCompanies = filmResponse.ProductionCompanies?.Select(pc => new ProductionCompany
             {
                 Id = pc.Id,
                 Name = pc.Name,
@@ -78,14 +78,14 @@ public class FilmService : IFilmService
             }).ToList(),
 
             // Map Production Countries
-            ProductionCountries = filmResponse.ProductionCountries?.Select(pc => new Film.ProductionCountry
+            ProductionCountries = filmResponse.ProductionCountries?.Select(pc => new ProductionCountry
             {
                 Iso31661 = pc.Iso31661,
                 Name = pc.Name
             }).ToList(),
 
             // Map Spoken Languages
-            SpokenLanguages = filmResponse.SpokenLanguages?.Select(sl => new Film.SpokenLanguage
+            SpokenLanguages = filmResponse.SpokenLanguages?.Select(sl => new SpokenLanguage
             {
                 EnglishName = sl.EnglishName,
                 Iso6391 = sl.Iso6391,

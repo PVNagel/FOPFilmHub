@@ -32,32 +32,5 @@ namespace FOPFilmHub.Library
         public List<ProductionCompany>? ProductionCompanies { get; set; }
         public List<ProductionCountry>? ProductionCountries { get; set; }
         public List<SpokenLanguage>? SpokenLanguages { get; set; }
-
-        public class Genre
-        {
-            public int Id { get; set; }
-            public string? Name { get; set; }
-        }
-
-        public class ProductionCompany
-        {
-            public int Id { get; set; }
-            public string? Name { get; set; }
-            public string? LogoPath { get; set; }
-            public string? OriginCountry { get; set; }
-        }
-
-        public class ProductionCountry
-        {
-            public string? Iso31661 { get; set; }
-            public string? Name { get; set; }
-        }
-
-        public class SpokenLanguage
-        {
-            public string? EnglishName { get; set; }
-            public string? Iso6391 { get; set; }
-            public string? Name { get; set; }
-        }
     }
 }
