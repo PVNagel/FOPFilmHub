@@ -21,79 +21,62 @@ public class FilmService : IFilmService
 
     public async Task<Film> GetFilmByIdAsync(int id)
     {
-        var apiUrl = $"https://api.themoviedb.org/3/movie/{id}";
-
-        // Send the request to the TMDb API
-        HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+        var requestUrl = $"https://api.themoviedb.org/3/movie/{id}";
+        var response = await _httpClient.GetAsync(requestUrl);
 
         if (!response.IsSuccessStatusCode)
-            return null;
-
-        // Get the response content as a string
-        var jsonResponse = await response.Content.ReadAsStringAsync();
-
-        // Deserialize the JSON response into the FilmResponse.Root class
-        var filmResponse = JsonConvert.DeserializeObject<FilmResponse.Root>(jsonResponse);
-
-        if (filmResponse == null)
-            return null;
-
-        // Map FilmResponse.Root to Film
-        var film = new Film
         {
-            Id = filmResponse.Id,
-            Title = filmResponse.Title,
+            throw new Exception($"Failed to retrieve film with id {id}. Status code: {response.StatusCode}");
+        }
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var filmResponse = JsonConvert.DeserializeObject<FilmResponse.Root>(responseContent);
+
+        Film film = new Film
+        {
+            TmdbFilmId = filmResponse.Id,
+            Adult = filmResponse.Adult,
+            BackdropPath = filmResponse.BackdropPath,
+            Budget = filmResponse.Budget,
+            Homepage = filmResponse.Homepage,
+            ImdbId = filmResponse.ImdbId,
+            OriginCountry = string.Join(", ", filmResponse.OriginCountry),
+            OriginalLanguage = filmResponse.OriginalLanguage,
             OriginalTitle = filmResponse.OriginalTitle,
             Overview = filmResponse.Overview,
-            PosterPath = filmResponse.PosterPath,
-            BackdropPath = filmResponse.BackdropPath,
             Popularity = filmResponse.Popularity,
-            VoteAverage = filmResponse.VoteAverage,
-            VoteCount = filmResponse.VoteCount,
-            Adult = filmResponse.Adult,
+            PosterPath = filmResponse.PosterPath,
             ReleaseDate = filmResponse.ReleaseDate,
-            Budget = filmResponse.Budget,
             Revenue = filmResponse.Revenue,
             Runtime = filmResponse.Runtime,
             Status = filmResponse.Status,
             Tagline = filmResponse.Tagline,
-            Homepage = filmResponse.Homepage,
-            OriginalLanguage = filmResponse.OriginalLanguage,
-            ImdbId = filmResponse.ImdbId,
+            Title = filmResponse.Title,
+            Video = filmResponse.Video,
+            VoteAverage = filmResponse.VoteAverage,
+            VoteCount = filmResponse.VoteCount,
 
-            // Map Genres
             Genres = filmResponse.Genres?.Select(g => new Genre
             {
-                Id = g.Id,
+                TmdbGenreId = g.Id,
                 Name = g.Name
             }).ToList(),
 
-            // Map Production Companies
             ProductionCompanies = filmResponse.ProductionCompanies?.Select(pc => new ProductionCompany
             {
-                Id = pc.Id,
+                TmdbProductionCompanyId = pc.Id,
                 Name = pc.Name,
                 LogoPath = pc.LogoPath,
                 OriginCountry = pc.OriginCountry
             }).ToList(),
 
-            // Map Production Countries
             ProductionCountries = filmResponse.ProductionCountries?.Select(pc => new ProductionCountry
             {
                 Iso31661 = pc.Iso31661,
                 Name = pc.Name
-            }).ToList(),
-
-            // Map Spoken Languages
-            SpokenLanguages = filmResponse.SpokenLanguages?.Select(sl => new SpokenLanguage
-            {
-                EnglishName = sl.EnglishName,
-                Iso6391 = sl.Iso6391,
-                Name = sl.Name
-            }).ToList(),
+            }).ToList()
         };
 
         return film;
     }
-
 }

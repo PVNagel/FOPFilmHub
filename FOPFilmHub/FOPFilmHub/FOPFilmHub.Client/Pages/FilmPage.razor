@@ -16,6 +16,17 @@ else
         <p><strong>Genres:</strong> @string.Join(", ", film.Genres.Select(g => g.Name))</p>
         <p><strong>Release Date:</strong> @film.ReleaseDate</p>
         <p><strong>Synopsis:</strong> @film.Overview</p>
+        <p>
+            <strong>Synopsis:</strong>
+            @foreach (var genre in film.Genres)
+            {
+                @genre.Name
+                if (genre != film.Genres.Last())
+                {
+                    <text>, </text>
+                }
+            }
+        </p>
     </div>
 }
 

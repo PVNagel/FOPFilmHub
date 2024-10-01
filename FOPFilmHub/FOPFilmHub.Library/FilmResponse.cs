@@ -9,6 +9,21 @@ namespace FOPFilmHub.Library
 {
     public class FilmResponse
     {
+        public class BelongsToCollection
+        {
+            [JsonProperty("id")]
+            public int Id { get; set; }
+
+            [JsonProperty("name")]
+            public string Name { get; set; }
+
+            [JsonProperty("poster_path")]
+            public string PosterPath { get; set; }
+
+            [JsonProperty("backdrop_path")]
+            public string BackdropPath { get; set; }
+        }
+
         public class Genre
         {
             [JsonProperty("id")]
@@ -50,6 +65,9 @@ namespace FOPFilmHub.Library
             [JsonProperty("backdrop_path")]
             public string BackdropPath { get; set; }
 
+            [JsonProperty("belongs_to_collection")]
+            public BelongsToCollection BelongsToCollection { get; set; }
+
             [JsonProperty("budget")]
             public int Budget { get; set; }
 
@@ -90,16 +108,13 @@ namespace FOPFilmHub.Library
             public List<ProductionCountry> ProductionCountries { get; set; }
 
             [JsonProperty("release_date")]
-            public string ReleaseDate { get; set; }
+            public DateTime ReleaseDate { get; set; }
 
             [JsonProperty("revenue")]
             public int Revenue { get; set; }
 
             [JsonProperty("runtime")]
             public int Runtime { get; set; }
-
-            [JsonProperty("spoken_languages")]
-            public List<SpokenLanguage> SpokenLanguages { get; set; }
 
             [JsonProperty("status")]
             public string Status { get; set; }
@@ -118,18 +133,6 @@ namespace FOPFilmHub.Library
 
             [JsonProperty("vote_count")]
             public int VoteCount { get; set; }
-        }
-
-        public class SpokenLanguage
-        {
-            [JsonProperty("english_name")]
-            public string EnglishName { get; set; }
-
-            [JsonProperty("iso_639_1")]
-            public string Iso6391 { get; set; }
-
-            [JsonProperty("name")]
-            public string Name { get; set; }
         }
     }
 }

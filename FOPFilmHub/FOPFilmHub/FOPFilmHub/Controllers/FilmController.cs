@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using FOPFilmHub.Library;
 using Newtonsoft.Json;
 using FOPFilmHub.Services;
+using Microsoft.EntityFrameworkCore;
+using FOPFilmHub.Data;
 
 namespace FOPFilmHub.Controllers
 {
@@ -16,22 +18,78 @@ namespace FOPFilmHub.Controllers
     public class FilmController : ControllerBase
     {
         private readonly IFilmService _filmService;
+        private readonly ApplicationDbContext _dbContext;
 
-        public FilmController(IFilmService filmService)
+
+        public FilmController(IFilmService filmService, ApplicationDbContext dbContext)
         {
             _filmService = filmService;
+            _dbContext = dbContext;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetFilmById(int id)
         {
-            var film = await _filmService.GetFilmByIdAsync(id);
-
-            if (film != null)
+            try
             {
-                return Ok(film);
+                var filmInDb = await _dbContext.Films
+                    .Include(f => f.Genres)
+                    .Include(f => f.ProductionCompanies)
+                    .Include(f => f.ProductionCountries)
+                    .FirstOrDefaultAsync(f => f.TmdbFilmId == id);
+
+                if (filmInDb != null)
+                {
+                    return Ok(filmInDb);
+                }
+
+                var filmFromApi = await _filmService.GetFilmByIdAsync(id);
+
+                if (filmFromApi != null)
+                {
+                    // Handle genres
+                    var genreIds = filmFromApi.Genres.Select(g => g.TmdbGenreId).ToList();
+                    var existingGenres = await _dbContext.Genres
+                        .Where(g => genreIds.Contains(g.TmdbGenreId))
+                        .ToListAsync();
+
+                    filmFromApi.Genres = filmFromApi.Genres.Select(g =>
+                        existingGenres.FirstOrDefault(eg => eg.TmdbGenreId == g.TmdbGenreId) ?? g
+                    ).ToList();
+
+                    // Handle production companies
+                    var companyIds = filmFromApi.ProductionCompanies.Select(pc => pc.TmdbProductionCompanyId).ToList();
+                    var existingCompanies = await _dbContext.ProductionCompanies
+                        .Where(pc => companyIds.Contains(pc.TmdbProductionCompanyId))
+                        .ToListAsync();
+
+                    filmFromApi.ProductionCompanies = filmFromApi.ProductionCompanies.Select(pc =>
+                        existingCompanies.FirstOrDefault(ec => ec.TmdbProductionCompanyId == pc.TmdbProductionCompanyId) ?? pc
+                    ).ToList();
+
+                    // Handle production countries
+                    var countryCodes = filmFromApi.ProductionCountries.Select(pc => pc.Iso31661).ToList();
+                    var existingCountries = await _dbContext.ProductionCountries
+                        .Where(pc => countryCodes.Contains(pc.Iso31661))
+                        .ToListAsync();
+
+                    filmFromApi.ProductionCountries = filmFromApi.ProductionCountries.Select(pc =>
+                        existingCountries.FirstOrDefault(ec => ec.Iso31661 == pc.Iso31661) ?? pc
+                    ).ToList();
+
+                    // Add film to the database
+                    _dbContext.Films.Add(filmFromApi);
+                    await _dbContext.SaveChangesAsync();
+
+                    return Ok(filmFromApi);
+                }
+
+                return NotFound($"Film with id {id} was not found.");
             }
-            return NotFound();
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error retrieving film: {ex.Message}");
+            }
         }
     }
 }

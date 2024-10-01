@@ -29,7 +29,6 @@ namespace FOPFilmHub.Client.Services
                 return await response.Content.ReadFromJsonAsync<Film>();
             }
 
-            // Handle the case when the film is not found or other errors
             return null;
         }
     }

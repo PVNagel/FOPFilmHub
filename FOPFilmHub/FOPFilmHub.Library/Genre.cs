@@ -11,8 +11,9 @@ namespace FOPFilmHub.Library
     public class Genre
     {
         [Key]
-        public int Id { get; set; }
-        public int TmdbId { get; set; }
+        public int GenreId { get; set; }
+        public int TmdbGenreId { get; set; }
         public string? Name { get; set; }
+        public List<Film>? Films { get; set; }
     }
 }
