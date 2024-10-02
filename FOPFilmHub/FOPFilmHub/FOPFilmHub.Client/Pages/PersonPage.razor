@@ -1,0 +1,35 @@
+﻿@page "/person/{id:int}"
+
+@using FOPFilmHub.Client.Services
+
+@inject IPersonClientService PersonClientService
+
+<h3>Person Page</h3>
+
+@if (person == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div>
+        <h4><strong>Name:</strong> @person.Name</h4>
+        <img src="https://image.tmdb.org/t/p/w200/@person.ProfilePath" alt="@person.Name" />
+        <p><strong>Biography:</strong> @person.Biography</p>
+        <p><strong>Known For:</strong> @person.KnownForDepartment</p>
+        <!-- Add more details about the person as needed -->
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Person? person;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Fetch person details using the service
+        person = await PersonClientService.GetPersonByIdAsync(Id);
+    }
+}

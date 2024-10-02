@@ -26,6 +26,8 @@ namespace FOPFilmHub
             builder.Services.AddScoped<IdentityRedirectManager>();
             builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvider>();
             builder.Services.AddScoped<IFilmService, FilmService>();
+            builder.Services.AddScoped<IPersonService, PersonService>();
+
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {

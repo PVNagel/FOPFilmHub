@@ -28,7 +28,7 @@ namespace FOPFilmHub.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetFilmById(int id)
+        public async Task<IActionResult> GetFilm(int id)
         {
             try
             {
@@ -89,6 +89,46 @@ namespace FOPFilmHub.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Error retrieving film: {ex.Message}");
+            }
+        }
+
+        [HttpGet("{id}/credits")]
+        public async Task<IActionResult> GetFilmCredits(int id)
+        {
+            try
+            {
+                var credits = await _filmService.GetFilmCredits(id);
+
+                if (credits != null)
+                {
+                    return Ok(credits);
+                }
+
+                return NotFound($"Credits for film with id {id} were not found.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error retrieving film credits: {ex.Message}");
+            }
+        }
+
+        [HttpGet("popular")]
+        public async Task<IActionResult> GetPopularFilms()
+        {
+            try
+            {
+                var popularFilms = await _filmService.GetPopularFilms();
+
+                if (popularFilms != null)
+                {
+                    return Ok(popularFilms);
+                }
+
+                return NotFound($"Popular films were not found.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error retrieving popular films: {ex.Message}");
             }
         }
     }

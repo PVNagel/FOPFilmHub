@@ -27,6 +27,75 @@ else
                 }
             }
         </p>
+
+        <h5>Cast</h5>
+        @if (credits?.Cast?.Any() == true)
+        {
+            var sortedCast = credits.Cast
+            .OrderBy(c => c.Order)
+            .Take(10);
+
+            <ul>
+                @foreach (var castMember in sortedCast)
+                {
+                    <li>
+                        <strong>@castMember.Name</strong> as @castMember.Character
+                        <br />
+                        <a href="/person/@castMember.Id">
+                            <img src="https://image.tmdb.org/t/p/w200/@castMember.ProfilePath" alt="@castMember.Name" />
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No cast information available.</p>
+        }
+
+        <h5>Crew</h5>
+        @if (credits?.Crew?.Any() == true)
+        {
+            var filteredCrew = credits.Crew
+            .Where(c =>
+            c.Job == "Director" ||
+            c.Department == "Writing")
+            .GroupBy(c => new { c.Id, c.Name, c.ProfilePath }) // Group by Id, Name, and ProfilePath to ensure uniqueness
+            .Select(g => new
+            {
+                Id = g.Key.Id, // Keep the Id
+                Name = g.Key.Name,
+                ProfilePath = g.Key.ProfilePath,
+                Jobs = g.Select(c => c.Job).Distinct() // Get distinct job titles
+            })
+            .Take(3);
+
+            if (filteredCrew.Any())
+            {
+                <ul>
+                    @foreach (var crewMember in filteredCrew)
+                    {
+                        <li>
+                            <strong>@crewMember.Name</strong> - @string.Join(", ", crewMember.Jobs)
+                            <br />
+                            <a href="/person/@crewMember.Id">
+                                <img src="https://image.tmdb.org/t/p/w200/@crewMember.ProfilePath" alt="@crewMember.Name" />
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No directors, writers, screenwriters, or producers information available.</p>
+            }
+        }
+        else
+        {
+            <p>No crew information available.</p>
+        }
+
+
     </div>
 }
 
@@ -34,9 +103,11 @@ else
     [Parameter]
     public int FilmId { get; set; }
     private Film? film;
+    private Credits? credits;
 
     protected override async Task OnInitializedAsync()
     {
         film = await FilmClientService.GetFilmByIdAsync(FilmId);
+        credits = await FilmClientService.GetFilmCreditsAsync(FilmId);
     }
 }

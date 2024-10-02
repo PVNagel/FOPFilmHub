@@ -31,5 +31,29 @@ namespace FOPFilmHub.Client.Services
 
             return null;
         }
+
+        public async Task<Credits> GetFilmCreditsAsync(int id)
+        {
+            var response = await _httpClient.GetAsync($"api/film/{id}/credits");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<Credits>();
+            }
+
+            return null;
+        }
+
+        public async Task<PopularFilms> GetPopularFilmsAsync()
+        {
+            var response = await _httpClient.GetAsync($"api/film/popular");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<PopularFilms>();
+            }
+
+            return null;
+        }
     }
 }

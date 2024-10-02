@@ -1,7 +1,38 @@
 ﻿@page "/films"
+@using FOPFilmHub.Client.Services
 
-<h3>Films</h3>
+@inject IFilmClientService FilmClientService
+
+<h3>Popular Films</h3>
+
+@if (popularFilms == null)
+{
+    <p>Loading...</p>
+}
+else if (popularFilms.FilmsList.Any() == true)
+{
+    <div class="film-list">
+        @foreach (var film in popularFilms.FilmsList)
+        {
+            <div class="film-item">
+                <img src="https://image.tmdb.org/t/p/w200/@film.PosterPath" alt="@film.Title" />
+                <h4>@film.Title (@film.ReleaseDate)</h4>
+                <p>@film.Overview</p>
+                <p><strong>Vote Average:</strong> @film.VoteAverage</p>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No popular films available at the moment.</p>
+}
 
 @code {
+    private PopularFilms? popularFilms;
 
+    protected override async Task OnInitializedAsync()
+    {
+        popularFilms = await FilmClientService.GetPopularFilmsAsync();
+    }
 }

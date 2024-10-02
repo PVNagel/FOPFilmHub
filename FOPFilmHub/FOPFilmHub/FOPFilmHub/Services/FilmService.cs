@@ -79,4 +79,36 @@ public class FilmService : IFilmService
 
         return film;
     }
+
+    public async Task<Credits> GetFilmCredits(int id)
+    {
+        var requestUrl = $"https://api.themoviedb.org/3/movie/{id}/credits";
+        var response = await _httpClient.GetAsync(requestUrl);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception($"Failed to retrieve credits of film with id {id}. Status code: {response.StatusCode}");
+        }
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var creditResponse = JsonConvert.DeserializeObject<Credits>(responseContent);
+
+        return creditResponse;
+    }
+
+    public async Task<PopularFilms> GetPopularFilms()
+    {
+        var requestUrl = $"https://api.themoviedb.org/3/movie/popular";
+        var response = await _httpClient.GetAsync(requestUrl);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception($"{response.StatusCode}");
+        }
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var popularFilmsResponse = JsonConvert.DeserializeObject<PopularFilms>(responseContent);
+
+        return popularFilmsResponse;
+    }
 }

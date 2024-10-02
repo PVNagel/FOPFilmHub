@@ -18,6 +18,7 @@ namespace FOPFilmHub.Client
             // Register UserClientService, FilmClientService
             builder.Services.AddScoped<IUserClientService, UserClientService>();
             builder.Services.AddScoped<IFilmClientService, FilmClientService>();
+            builder.Services.AddScoped<IPersonClientService, PersonClientService>();
 
             builder.Services.AddAuthorizationCore();
             builder.Services.AddCascadingAuthenticationState();

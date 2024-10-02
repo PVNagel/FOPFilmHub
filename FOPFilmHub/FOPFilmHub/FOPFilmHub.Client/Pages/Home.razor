@@ -8,17 +8,17 @@
 <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
     <MudCarouselItem Transition="transition" Color="@Color.Primary">
         <div class="d-flex" style="height:100%">
-            <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Size="@Size.Large" />
+            <MudImage Src="@filmPoster1"  Class="mx-auto" Style="height:100%; width:auto;" />
         </div>
     </MudCarouselItem>
-    <MudCarouselItem Transition="transition" Color="@Color.Secondary">
+    <MudCarouselItem Transition="transition" Color="@Color.Primary">
         <div class="d-flex" style="height:100%">
-            <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Size="@Size.Large" />
+            <MudImage Src="@filmPoster2" Class="mx-auto" Style="height:100%; width:auto;" />
         </div>
     </MudCarouselItem>
-    <MudCarouselItem Transition="transition">
+    <MudCarouselItem Transition="transition" Color="@Color.Primary">
         <div class="d-flex" style="height:100%">
-            <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Color="@Color.Primary" Size="@Size.Large" />
+            <MudImage Src="@filmPoster3" Class="mx-auto" Style="height:100%; width:auto;" />
         </div>
     </MudCarouselItem>
 </MudCarousel>
@@ -82,4 +82,14 @@
     private bool enableSwipeGesture = true;
     private bool autocycle = true;
     private Transition transition = Transition.Slide;
+    private string filmPoster1 = "";
+    private string filmPoster2 = "";
+    private string filmPoster3 = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        filmPoster1 = "https://image.tmdb.org/t/p/w500/4GDy0PHYX3VRXUtwK5ysFbg3kEx.jpg";
+        filmPoster2 = "https://image.tmdb.org/t/p/w500/bX2xnavhMYjWDoZp1VM6VnU1xwe.jpg";
+        filmPoster3 = "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg";
+    }
 }
