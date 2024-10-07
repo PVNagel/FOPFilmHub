@@ -7,7 +7,22 @@ using System.Threading.Tasks;
 
 namespace FOPFilmHub.Library
 {
-    public class PopularFilmModel
+    public class PopularFilmsResponse
+    {
+        [JsonProperty("page")]
+        public int Page { get; set; }
+
+        [JsonProperty("results")]
+        public List<PopularFilm> Films { get; set; }
+
+        [JsonProperty("total_pages")]
+        public int TotalPages { get; set; }
+
+        [JsonProperty("total_results")]
+        public int TotalResults { get; set; }
+    }
+
+    public class PopularFilm
     {
         [JsonProperty("adult")]
         public bool Adult { get; set; }
@@ -37,7 +52,7 @@ namespace FOPFilmHub.Library
         public string PosterPath { get; set; }
 
         [JsonProperty("release_date")]
-        public string ReleaseDate { get; set; }
+        public DateTime ReleaseDate { get; set; }
 
         [JsonProperty("title")]
         public string Title { get; set; }

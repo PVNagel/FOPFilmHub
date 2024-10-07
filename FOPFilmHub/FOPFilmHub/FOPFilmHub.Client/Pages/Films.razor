@@ -9,10 +9,10 @@
 {
     <p>Loading...</p>
 }
-else if (popularFilms.FilmsList.Any() == true)
+else if (popularFilms.Any() == true)
 {
     <div class="film-list">
-        @foreach (var film in popularFilms.FilmsList)
+        @foreach (var film in popularFilms)
         {
             <div class="film-item">
                 <img src="https://image.tmdb.org/t/p/w200/@film.PosterPath" alt="@film.Title" />
@@ -29,7 +29,7 @@ else
 }
 
 @code {
-    private PopularFilms? popularFilms;
+    private List<Film>? popularFilms;
 
     protected override async Task OnInitializedAsync()
     {

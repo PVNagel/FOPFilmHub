@@ -96,7 +96,7 @@ public class FilmService : IFilmService
         return creditResponse;
     }
 
-    public async Task<PopularFilms> GetPopularFilms()
+    public async Task<List<Film>> GetPopularFilms()
     {
         var requestUrl = $"https://api.themoviedb.org/3/movie/popular";
         var response = await _httpClient.GetAsync(requestUrl);
@@ -107,8 +107,31 @@ public class FilmService : IFilmService
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        var popularFilmsResponse = JsonConvert.DeserializeObject<PopularFilms>(responseContent);
+        var popularFilmsResponse = JsonConvert.DeserializeObject<PopularFilmsResponse>(responseContent);
+        List<Film> popularFilms = new List<Film>();
 
-        return popularFilmsResponse;
+        foreach(var film in popularFilmsResponse.Films )
+        {
+            Film popularFilm = new Film
+            {
+                TmdbFilmId = film.Id,
+                Adult = film.Adult,
+                BackdropPath = film.BackdropPath,
+                PosterPath = film.PosterPath,
+                Popularity = film.Popularity,
+                OriginalLanguage = film.OriginalLanguage,
+                OriginalTitle = film.OriginalTitle,
+                Overview = film.Overview,
+                ReleaseDate = film.ReleaseDate,
+                Title = film.Title,
+                Video = film.Video,
+                VoteAverage = film.VoteAverage,
+                VoteCount = film.VoteCount
+            };
+
+            popularFilms.Add(popularFilm);
+        }
+
+        return popularFilms;
     }
 }

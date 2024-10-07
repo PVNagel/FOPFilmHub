@@ -6,7 +6,7 @@ namespace FOPFilmHub.Services
     {
         Task<Film> GetFilmByIdAsync(int id);
         Task<Credits> GetFilmCredits(int id);
-        Task<PopularFilms> GetPopularFilms();
+        Task<List<Film>> GetPopularFilms();
 
     }
 }

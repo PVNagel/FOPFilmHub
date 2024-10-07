@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using FOPFilmHub.Client.Pages;
 using FOPFilmHub.Library;
 
 namespace FOPFilmHub.Client.Services
@@ -44,13 +45,13 @@ namespace FOPFilmHub.Client.Services
             return null;
         }
 
-        public async Task<PopularFilms> GetPopularFilmsAsync()
+        public async Task<List<Film>> GetPopularFilmsAsync()
         {
             var response = await _httpClient.GetAsync($"api/film/popular");
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<PopularFilms>();
+                return await response.Content.ReadFromJsonAsync<List<Film>>();
             }
 
             return null;
