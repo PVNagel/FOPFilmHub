@@ -2,41 +2,44 @@
 
 <PageTitle>Home</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
-<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor and the .NET 8 Template!</MudText>
+<MudText Typo="Typo.h3" GutterBottom="true">Welcome to the FOP Film Hub</MudText>
+<MudText Class="mb-8">Powered by MudBlazor and the .NET 8</MudText>
 
-<MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
-    <MudCarouselItem Transition="transition" Color="@Color.Primary">
-        <div class="d-flex" style="height:100%">
-            <MudImage Src="@filmPoster1"  Class="mx-auto" Style="height:100%; width:auto;" />
+<MudCarousel Class="mud-width-full" Style="height:400px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+    <MudCarouselItem Transition="transition" Style="border-radius: 15px;">
+        <div class="d-flex justify-content-around align-items-center" style="height:100%; padding: 20px;">
+            <MudImage Src="@filmPoster1" Class="mx-auto" Style="height:100%; width:auto; object-fit:contain; border-radius: 10px;" />
+            <MudImage Src="@filmPoster2" Class="mx-auto" Style="height:100%; width:auto; object-fit:contain; border-radius: 10px;" />
+            <MudImage Src="@filmPoster3" Class="mx-auto" Style="height:100%; width:auto; object-fit:contain; border-radius: 10px;" />
         </div>
     </MudCarouselItem>
-    <MudCarouselItem Transition="transition" Color="@Color.Primary">
-        <div class="d-flex" style="height:100%">
-            <MudImage Src="@filmPoster2" Class="mx-auto" Style="height:100%; width:auto;" />
+    <MudCarouselItem Transition="transition" Style="border-radius: 15px;">
+        <div class="d-flex justify-content-around align-items-center" style="height:100%; padding: 20px;">
+            <MudImage Src="@filmPoster4" Class="mx-auto" Style="height:100%; width:auto; object-fit:contain; border-radius: 10px;" />
+            <MudImage Src="@filmPoster5" Class="mx-auto" Style="height:100%; width:auto; object-fit:contain; border-radius: 10px;" />
+            <MudImage Src="@filmPoster6" Class="mx-auto" Style="height:100%; width:auto; object-fit:contain; border-radius: 10px;" />
         </div>
     </MudCarouselItem>
-    <MudCarouselItem Transition="transition" Color="@Color.Primary">
-        <div class="d-flex" style="height:100%">
-            <MudImage Src="@filmPoster3" Class="mx-auto" Style="height:100%; width:auto;" />
+    <MudCarouselItem Transition="transition" Style="border-radius: 15px;">
+        <div class="d-flex justify-content-around align-items-center" style="height:100%; padding: 20px;">
+            <MudImage Src="@filmPoster7" Class="mx-auto" Style="height:100%; width:auto; object-fit:contain; border-radius: 10px;" />
+            <MudImage Src="@filmPoster8" Class="mx-auto" Style="height:100%; width:auto; object-fit:contain; border-radius: 10px;" />
+            <MudImage Src="@filmPoster9" Class="mx-auto" Style="height:100%; width:auto; object-fit:contain; border-radius: 10px;" />
         </div>
     </MudCarouselItem>
 </MudCarousel>
 
 <MudAlert Severity="Severity.Normal">
-    You can find documentation and examples on our website here:
-    <MudLink Href="https://mudblazor.com" Target="_blank" Typo="Typo.body2" Color="Color.Primary">
-        <b>www.mudblazor.com</b>
-    </MudLink>
+    You can find films under the film section, in the menu to your left.
 </MudAlert>
 
 <br />
-<MudText Typo="Typo.h5" GutterBottom="true">Interactivity in this Template</MudText>
+<MudText Typo="Typo.h5" GutterBottom="true">FOP Film Hub Usage</MudText>
 <br />
 <MudText Typo="Typo.body2">
-    When you opt for the "Global" Interactivity Location, <br />
-    the render modes are defined in App.razor and consequently apply to all child components.<br />
-    In this case, providers are globally set in the MainLayout.<br />
+    The FOP Film Hub is a website where the FOP discord can find films, <br />
+    add them to watchlists, record which they have seen, and create film reviews.<br />
+    and much more.<br />
     <br />
     On the other hand, if you choose the "Per page/component" Interactivity Location,<br />
     it is necessary to include the <br />
@@ -85,11 +88,24 @@
     private string filmPoster1 = "";
     private string filmPoster2 = "";
     private string filmPoster3 = "";
+    private string filmPoster4 = "";
+    private string filmPoster5 = "";
+    private string filmPoster6 = "";
+    private string filmPoster7 = "";
+    private string filmPoster8 = "";
+    private string filmPoster9 = "";
+
 
     protected override async Task OnInitializedAsync()
     {
         filmPoster1 = "https://image.tmdb.org/t/p/w500/4GDy0PHYX3VRXUtwK5ysFbg3kEx.jpg";
         filmPoster2 = "https://image.tmdb.org/t/p/w500/bX2xnavhMYjWDoZp1VM6VnU1xwe.jpg";
         filmPoster3 = "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg";
+        filmPoster4 = "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg";
+        filmPoster5 = "https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg";
+        filmPoster6 = "https://image.tmdb.org/t/p/w500/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg";
+        filmPoster7 = "https://image.tmdb.org/t/p/w500/nNAeTmF4CtdSgMDplXTDPOpYzsX.jpg";
+        filmPoster8 = "https://image.tmdb.org/t/p/w500/ljsZTbVsrQSqZgWeep2B1QiDKuh.jpg";
+        filmPoster9 = "https://image.tmdb.org/t/p/w500/uS9m8OBk1A8eM9I042bx8XXpqAq.jpg";
     }
 }

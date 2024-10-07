@@ -2,101 +2,122 @@
 @using FOPFilmHub.Client.Services
 
 @inject IFilmClientService FilmClientService
-
-<h3>Film Details</h3>
+@inject NavigationManager NavigationManager
 
 @if (film == null)
 {
-    <p>Loading...</p>
+    <MudProgressCircular Indeterminate="true" Color="Color.Primary" Class="my-4" />
 }
 else
 {
-    <div>
-        <h4><strong>Title:</strong> @film.Title</h4>
-        <p><strong>Genres:</strong> @string.Join(", ", film.Genres.Select(g => g.Name))</p>
-        <p><strong>Release Date:</strong> @film.ReleaseDate</p>
-        <p><strong>Synopsis:</strong> @film.Overview</p>
-        <p>
-            <strong>Synopsis:</strong>
-            @foreach (var genre in film.Genres)
-            {
-                @genre.Name
-                if (genre != film.Genres.Last())
-                {
-                    <text>, </text>
-                }
-            }
-        </p>
+    <MudCard>
+        <div style="background-image: url('@($"https://image.tmdb.org/t/p/original/{film.BackdropPath}")');
+         background-size: cover;
+         background-position: top center; /* Focus on the top of the image */
+         min-height: 400px; /* Increased minimum height */
+         max-height: 500px; /* Optional: Prevent excessive stretching */
+         position: relative;">
+        </div>
 
-        <h5>Cast</h5>
+
+        <div style="display: flex; padding: 16px;">
+            <MudCardMedia Image="@($"https://image.tmdb.org/t/p/original/{film.PosterPath}")"
+                          Alt="@film.Title"
+                          Class="mud-card-media-cover"
+                          Style="width: 300px; height: 450px; object-fit: cover; margin-right: 16px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
+
+            <MudCardContent Style="flex: 1;">
+                <h2 class="mb-3"><strong>@film.Title</strong></h2>
+                <p><strong>Synopsis:</strong> @film.Overview</p>
+                <p></p>
+                <p><strong>Genres:</strong> @string.Join(", ", film.Genres.Select(g => g.Name))</p>
+                <p><strong>Release Date:</strong> @film.ReleaseDate.ToString("MMMM dd, yyyy")</p>
+                <p><strong>Runtime:</strong> @film.Runtime min</p>
+                <p><strong>Budget:</strong> @(film.Budget > 0 ? $"${film.Budget:N0}" : "N/A")</p>
+                <p><strong>Revenue:</strong> @(film.Revenue > 0 ? $"${film.Revenue:N0}" : "N/A")</p>
+                <p><strong>Production Companies:</strong> @string.Join(", ", film.ProductionCompanies.Select(g => g.Name))</p>
+                <p><strong>Production Countries:</strong> @string.Join(", ", film.ProductionCountries.Select(g => g.Name))</p>
+                <p><strong>Vote Average:</strong> @film.VoteAverage / 10 (Votes: @film.VoteCount)</p>
+            </MudCardContent>
+        </div>
+    </MudCard>
+
+
+
+    <MudContainer Class="my-4">
+        <h3 class="mb-3">Cast</h3>
         @if (credits?.Cast?.Any() == true)
         {
-            var sortedCast = credits.Cast
-            .OrderBy(c => c.Order)
-            .Take(10);
-
-            <ul>
-                @foreach (var castMember in sortedCast)
+            <MudGrid>
+                @foreach (var castMember in credits.Cast.OrderBy(c => c.Order).Take(10))
                 {
-                    <li>
-                        <strong>@castMember.Name</strong> as @castMember.Character
-                        <br />
-                        <a href="/person/@castMember.Id">
-                            <img src="https://image.tmdb.org/t/p/w200/@castMember.ProfilePath" alt="@castMember.Name" />
-                        </a>
-                    </li>
+                    <MudItem xs="6" md="4" lg="3">
+                        <MudCard Class="mud-elevation-1">
+                            <MudCardMedia Image="@($"https://image.tmdb.org/t/p/w200/{castMember.ProfilePath}")"
+                                          Alt="@castMember.Name"
+                                          Class="mud-card-media-square"
+                                          Style="border-radius: 10px; height: 200px; object-fit: cover; cursor: pointer;"
+                                          @onclick="() => NavigateToPerson(castMember.Id)" />
+                            <MudCardContent>
+                                <p><strong>@castMember.Name</strong></p>
+                                <p class="text-muted">as @castMember.Character</p>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
                 }
-            </ul>
+            </MudGrid>
         }
         else
         {
             <p>No cast information available.</p>
         }
 
-        <h5>Crew</h5>
+        <h3 class="my-4">Crew</h3>
         @if (credits?.Crew?.Any() == true)
         {
             var filteredCrew = credits.Crew
-            .Where(c =>
-            c.Job == "Director" ||
-            c.Department == "Writing")
-            .GroupBy(c => new { c.Id, c.Name, c.ProfilePath }) // Group by Id, Name, and ProfilePath to ensure uniqueness
+            .Where(c => c.Job == "Director" || c.Department == "Writing")
+            .GroupBy(c => new { c.Id, c.Name, c.ProfilePath })
             .Select(g => new
             {
-                Id = g.Key.Id, // Keep the Id
+                Id = g.Key.Id,
                 Name = g.Key.Name,
                 ProfilePath = g.Key.ProfilePath,
-                Jobs = g.Select(c => c.Job).Distinct() // Get distinct job titles
+                Jobs = g.Select(c => c.Job).Distinct()
             })
             .Take(3);
 
             if (filteredCrew.Any())
             {
-                <ul>
+                <MudGrid>
                     @foreach (var crewMember in filteredCrew)
                     {
-                        <li>
-                            <strong>@crewMember.Name</strong> - @string.Join(", ", crewMember.Jobs)
-                            <br />
-                            <a href="/person/@crewMember.Id">
-                                <img src="https://image.tmdb.org/t/p/w200/@crewMember.ProfilePath" alt="@crewMember.Name" />
-                            </a>
-                        </li>
+                        <MudItem xs="6" md="4">
+                            <MudCard Class="mud-elevation-1">
+                                <MudCardMedia Image="@($"https://image.tmdb.org/t/p/w200/{crewMember.ProfilePath}")"
+                                              Alt="@crewMember.Name"
+                                              Class="mud-card-media-square"
+                                              Style="border-radius: 10px; height: 200px; object-fit: cover; cursor: pointer;"
+                                              @onclick="() => NavigateToPerson(crewMember.Id)" />
+                                <MudCardContent>
+                                    <p><strong>@crewMember.Name</strong></p>
+                                    <p class="text-muted">@string.Join(", ", crewMember.Jobs)</p>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
                     }
-                </ul>
+                </MudGrid>
             }
             else
             {
-                <p>No directors, writers, screenwriters, or producers information available.</p>
+                <p>No directors, writers, or screenwriters information available.</p>
             }
         }
         else
         {
             <p>No crew information available.</p>
         }
-
-
-    </div>
+    </MudContainer>
 }
 
 @code {
@@ -109,5 +130,10 @@ else
     {
         film = await FilmClientService.GetFilmByIdAsync(FilmId);
         credits = await FilmClientService.GetFilmCreditsAsync(FilmId);
+    }
+
+    private void NavigateToPerson(int personId)
+    {
+        NavigationManager.NavigateTo($"/person/{personId}");
     }
 }
